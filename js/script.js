@@ -8,7 +8,7 @@
    Example: India (+91) 98765 43210 → "919876543210"
 */
 const CONFIG = {
-  whatsappNumber: "919876543210",   // ← REPLACE WITH YOUR NUMBER
+  whatsappNumber: "015715099511",   // ← REPLACE WITH YOUR NUMBER
   currency: "₹",
   storageKey: "vkfoods_menu_v1"
 };
