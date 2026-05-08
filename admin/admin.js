@@ -3,7 +3,7 @@
    ========================================================== */
 
 const ADMIN_CONFIG = {
-  password: "vkfoods@2024",   // ← CHANGE THIS to your preferred password
+  password: "VKfoods980465",
   storageKey: "vkfoods_menu_v1"
 };
 
@@ -133,7 +133,7 @@ function renderStats() {
         <i class="fas fa-rupee-sign"></i>
       </div>
       <div class="stat-info">
-        <strong>₹${Math.max(...menuItems.map(i => i.price)).toLocaleString("en-IN")}</strong>
+        <strong>$${Math.max(...menuItems.map(i => i.price)).toLocaleString("en-US")}</strong>
         <span>Highest Price</span>
       </div>
     </div>`;
@@ -179,7 +179,7 @@ function renderTable() {
         <td>
           <span class="category-badge cat-${item.category}">${catLabel}</span>
         </td>
-        <td class="price-cell">₹${item.price.toLocaleString("en-IN")}</td>
+        <td class="price-cell">$${item.price.toLocaleString("en-US")}</td>
         <td class="unit-cell">${esc(item.unit)}</td>
         <td>
           <div class="action-cell">

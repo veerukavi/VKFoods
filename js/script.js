@@ -8,8 +8,8 @@
    Example: India (+91) 98765 43210 → "919876543210"
 */
 const CONFIG = {
-  whatsappNumber: "015715099511",   // ← REPLACE WITH YOUR NUMBER
-  currency: "₹",
+  whatsappNumber: "15715099511",
+  currency: "$",
   storageKey: "vkfoods_menu_v1"
 };
 
@@ -223,7 +223,7 @@ function updateCartUI() {
     </div>`).join("");
 
   const total = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
-  document.getElementById("cart-total-amount").textContent = `${CONFIG.currency}${total.toLocaleString("en-IN")}`;
+  document.getElementById("cart-total-amount").textContent = `${CONFIG.currency}${total.toLocaleString("en-US")}`;
 }
 
 /* ══════════════════════════════════════
@@ -263,11 +263,11 @@ function renderSelectedSummary() {
     ${cart.map(c => `
       <div class="summary-item">
         <span>${c.emoji} ${c.name} × ${c.qty}</span>
-        <span>${CONFIG.currency}${(c.price * c.qty).toLocaleString("en-IN")}</span>
+        <span>${CONFIG.currency}${(c.price * c.qty).toLocaleString("en-US")}</span>
       </div>`).join("")}
     <div class="summary-item" style="font-weight:600;border-top:1px solid #ddd;margin-top:6px;padding-top:6px">
       <span>Estimated Total</span>
-      <span>${CONFIG.currency}${total.toLocaleString("en-IN")}</span>
+      <span>${CONFIG.currency}${total.toLocaleString("en-US")}</span>
     </div>`;
 }
 
@@ -304,11 +304,11 @@ function buildWhatsAppMessage({ name, phone, eventDate, guestCount, eventType, n
   lines.push("━━━━━━━━━━━━━━━━━━━━");
   lines.push("📋 *Requested Items:*");
   cart.forEach(c => {
-    lines.push(`  • ${c.emoji} ${c.name} × ${c.qty} — ${CONFIG.currency}${(c.price * c.qty).toLocaleString("en-IN")} (${c.unit})`);
+    lines.push(`  • ${c.emoji} ${c.name} × ${c.qty} — ${CONFIG.currency}${(c.price * c.qty).toLocaleString("en-US")} (${c.unit})`);
   });
   const total = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
   lines.push("━━━━━━━━━━━━━━━━━━━━");
-  lines.push(`💰 *Estimated Total:* ${CONFIG.currency}${total.toLocaleString("en-IN")}`);
+  lines.push(`💰 *Estimated Total:* ${CONFIG.currency}${total.toLocaleString("en-US")}`);
   if (notes) {
     lines.push("");
     lines.push(`📝 *Notes:* ${notes}`);
