@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VK Foods – Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-box">
+      <div class="login-logo">
+        <span>🍛</span>
+        <div>
+          <strong>VK Foods</strong>
+          <span>Admin Panel</span>
+        </div>
+      </div>
+      <h2>Welcome Back</h2>
+      <p class="login-sub">Enter your admin password to manage the menu.</p>
+      <form id="login-form">
+        <div class="form-group">
+          <label>Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="admin-password" placeholder="Enter admin password" required />
+            <button type="button" id="toggle-pw"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div id="login-error" class="login-error hidden">Incorrect password. Please try again.</div>
+        <button type="submit" class="btn btn-primary btn-full">
+          <i class="fas fa-unlock"></i> Login
+        </button>
+      </form>
+      <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Website</a>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div id="admin-panel" class="hidden">
+    <header class="admin-header">
+      <div class="admin-header-inner">
+        <div class="admin-logo">
+          <span>🍛</span>
+          <div>
+            <strong>VK Foods</strong>
+            <span>Admin Panel</span>
+          </div>
+        </div>
+        <div class="admin-actions">
+          <a href="../index.html" class="btn btn-outline-small" target="_blank">
+            <i class="fas fa-eye"></i> View Site
+          </a>
+          <button class="btn btn-danger-small" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <!-- Stats row -->
+      <div class="stats-row" id="stats-row"></div>
+
+      <!-- Controls bar -->
+      <div class="controls-bar">
+        <div class="search-wrap">
+          <i class="fas fa-search"></i>
+          <input type="text" id="search-input" placeholder="Search items..." />
+        </div>
+        <div class="filter-wrap">
+          <select id="filter-category">
+            <option value="all">All Categories</option>
+            <option value="breakfast">Breakfast & Tiffin</option>
+            <option value="rice">Rice Items</option>
+            <option value="curries">Curries & Sides</option>
+            <option value="sweets">Sweets</option>
+            <option value="snacks">Snacks</option>
+            <option value="beverages">Beverages</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" id="add-item-btn">
+          <i class="fas fa-plus"></i> Add New Item
+        </button>
+        <button class="btn btn-secondary" id="reset-btn" title="Reset to default menu">
+          <i class="fas fa-rotate-left"></i> Reset to Default
+        </button>
+      </div>
+
+      <!-- Items table -->
+      <div class="table-wrap">
+        <table id="items-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Unit</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="items-tbody"></tbody>
+        </table>
+        <div class="table-empty hidden" id="table-empty">
+          <i class="fas fa-utensils"></i>
+          <p>No items found. Add your first item!</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ITEM MODAL (Add / Edit) -->
+  <div class="modal-overlay hidden" id="item-modal-overlay">
+    <div class="modal" id="item-modal">
+      <div class="modal-header">
+        <h3 id="modal-title">Add New Item</h3>
+        <button class="modal-close" id="item-modal-close"><i class="fas fa-times"></i></button>
+      </div>
+      <form id="item-form">
+        <input type="hidden" id="item-id" />
+        <div class="form-row">
+          <div class="form-group">
+            <label>Item Name *</label>
+            <input type="text" id="item-name" placeholder="e.g. Masala Dosa" required />
+          </div>
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="item-category" required>
+              <option value="">Select category</option>
+              <option value="breakfast">Breakfast & Tiffin</option>
+              <option value="rice">Rice Items</option>
+              <option value="curries">Curries & Sides</option>
+              <option value="sweets">Sweets</option>
+              <option value="snacks">Snacks</option>
+              <option value="beverages">Beverages</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="item-desc" rows="2" placeholder="Brief description of the item..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Price (₹) *</label>
+            <input type="number" id="item-price" placeholder="e.g. 55" min="1" required />
+          </div>
+          <div class="form-group">
+            <label>Unit</label>
+            <input type="text" id="item-unit" placeholder="e.g. per plate, per kg" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Emoji Icon</label>
+            <input type="text" id="item-emoji" placeholder="e.g. 🍛" maxlength="4" />
+          </div>
+          <div class="form-group">
+            <label>Accent Color</label>
+            <input type="color" id="item-color" value="#FF6B35" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Image URL <span class="optional">(optional)</span></label>
+          <input type="url" id="item-image" placeholder="https://example.com/image.jpg" />
+          <small>Leave blank to use emoji icon. Paste a direct image link to show a photo.</small>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="item-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="item-submit">
+            <i class="fas fa-save"></i> Save Item
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div class="modal-overlay hidden" id="confirm-overlay">
+    <div class="modal confirm-modal">
+      <div class="confirm-icon"><i class="fas fa-trash"></i></div>
+      <h3>Delete Item?</h3>
+      <p id="confirm-msg">Are you sure you want to delete this item?</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="confirm-cancel">Cancel</button>
+        <button class="btn btn-danger" id="confirm-ok">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="admin-toast" class="toast"></div>
+
+  <script src="../js/menu-data.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

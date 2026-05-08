@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VK Foods – From Our Kitchen to Your Soul</title>
+  <meta name="description" content="VK Foods – Authentic South Indian Catering. Traditional recipes crafted with love for all your celebrations." />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="logo">
+        <span class="logo-icon">🍛</span>
+        <div class="logo-text">
+          <span class="logo-name">VK Foods</span>
+          <span class="logo-tag">From Our Kitchen to Your Soul</span>
+        </div>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li>
+          <button class="cart-btn" id="cart-toggle">
+            <i class="fas fa-clipboard-list"></i>
+            <span class="cart-count" id="cart-count">0</span>
+            Quote
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section id="home" class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-label">Authentic South Indian Catering</span>
+      <h1 class="hero-title">VK Foods</h1>
+      <p class="hero-tagline"><em>From Our Kitchen to Your Soul</em></p>
+      <p class="hero-sub">Bringing the warmth of traditional South Indian flavors to your celebrations, gatherings, and every special moment.</p>
+      <div class="hero-actions">
+        <a href="#menu" class="btn btn-primary">Explore Menu</a>
+        <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-decor">
+      <div class="decor-ring r1"></div>
+      <div class="decor-ring r2"></div>
+      <div class="decor-ring r3"></div>
+      <div class="decor-dots"></div>
+    </div>
+    <div class="scroll-hint"><i class="fas fa-chevron-down"></i></div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+          <h3>Fresh Ingredients</h3>
+          <p>Sourced daily from local markets, every dish bursts with freshness and purity.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-fire-burner"></i></div>
+          <h3>Traditional Recipes</h3>
+          <p>Age-old family recipes passed through generations — authentic taste guaranteed.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-star"></i></div>
+          <h3>Trusted Catering</h3>
+          <p>Reliable, punctual, and professional service for weddings, parties & events.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-heart"></i></div>
+          <h3>Made with Love</h3>
+          <p>Every meal is crafted with care and devotion as if cooking for family.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MENU ===== -->
+  <section id="menu" class="menu-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Our Offerings</span>
+        <h2 class="section-title">Explore Our Menu</h2>
+        <p class="section-sub">A rich spread of South Indian delights — from crispy tiffins to soul-warming rice meals and indulgent sweets.</p>
+      </div>
+
+      <!-- Category Tabs -->
+      <div class="category-tabs" id="category-tabs">
+        <button class="tab-btn active" data-category="all">All Items</button>
+        <button class="tab-btn" data-category="breakfast">Breakfast & Tiffin</button>
+        <button class="tab-btn" data-category="rice">Rice Items</button>
+        <button class="tab-btn" data-category="curries">Curries & Sides</button>
+        <button class="tab-btn" data-category="sweets">Sweets</button>
+        <button class="tab-btn" data-category="snacks">Snacks</button>
+        <button class="tab-btn" data-category="beverages">Beverages</button>
+      </div>
+
+      <!-- Menu Grid -->
+      <div class="menu-grid" id="menu-grid">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="menu-empty hidden" id="menu-empty">
+        <i class="fas fa-utensils"></i>
+        <p>No items in this category yet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="about-section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-visual">
+          <div class="about-emblem">
+            <span>🍛</span>
+            <div class="emblem-ring"></div>
+          </div>
+          <div class="about-badge">Est. 2015</div>
+        </div>
+        <div class="about-content">
+          <span class="section-label">Our Story</span>
+          <h2 class="section-title">Rooted in Tradition, Served with Love</h2>
+          <p>VK Foods was born from a deep love for authentic South Indian cuisine. What began as home cooking for family and friends has grown into a trusted catering service in our community.</p>
+          <p>Every dish we prepare carries the essence of tradition — the crispiness of a perfectly made dosa, the warmth of a well-spiced sambar, the sweetness of freshly prepared payasam. We believe food is more than nourishment; it's an experience that connects hearts.</p>
+          <div class="about-stats">
+            <div class="stat">
+              <strong>500+</strong>
+              <span>Events Catered</span>
+            </div>
+            <div class="stat">
+              <strong>5000+</strong>
+              <span>Happy Guests</span>
+            </div>
+            <div class="stat">
+              <strong>30+</strong>
+              <span>Menu Items</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Reach Out</span>
+        <h2 class="section-title">Let's Plan Together</h2>
+        <p class="section-sub">Ready to make your event special? Reach out on WhatsApp and we'll get back to you quickly.</p>
+      </div>
+      <div class="contact-cards">
+        <a href="#" class="contact-card whatsapp-card" id="whatsapp-direct">
+          <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+          <div class="contact-info">
+            <strong>WhatsApp Us</strong>
+            <span>Quick response guaranteed</span>
+          </div>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+        <div class="contact-card info-card">
+          <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="contact-info">
+            <strong>Serving Your City</strong>
+            <span>Available for local events & catering</span>
+          </div>
+        </div>
+        <div class="contact-card info-card">
+          <div class="contact-icon"><i class="fas fa-clock"></i></div>
+          <div class="contact-info">
+            <strong>Available Daily</strong>
+            <span>7:00 AM – 9:00 PM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="logo-name">VK Foods</span>
+          <p>From Our Kitchen to Your Soul</p>
+        </div>
+        <div class="footer-links">
+          <a href="#home">Home</a>
+          <a href="#menu">Menu</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+          <a href="admin/index.html">Admin</a>
+        </div>
+      </div>
+      <p class="footer-copy">&copy; 2025 VK Foods. All rights reserved. Crafted with ❤️ for South Indian cuisine.</p>
+    </div>
+  </footer>
+
+  <!-- ===== CART SIDEBAR ===== -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h3><i class="fas fa-clipboard-list"></i> Your Quote</h3>
+      <button class="cart-close" id="cart-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <div class="cart-empty" id="cart-empty">
+        <i class="fas fa-utensils"></i>
+        <p>No items added yet.<br>Browse the menu and add items.</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cart-footer" style="display:none">
+      <div class="cart-total">
+        <span>Estimated Total</span>
+        <strong id="cart-total-amount">₹0</strong>
+      </div>
+      <p class="cart-note">* Final price depends on quantity and event size. We'll confirm on WhatsApp.</p>
+      <button class="btn btn-primary btn-full" id="request-quote-btn">
+        <i class="fab fa-whatsapp"></i> Request Quote on WhatsApp
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== QUOTE MODAL ===== -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="quote-modal">
+      <div class="modal-header">
+        <h3>Request a Quote</h3>
+        <button class="modal-close" id="modal-close"><i class="fas fa-times"></i></button>
+      </div>
+      <form id="quote-form" novalidate>
+        <div class="form-group">
+          <label for="customer-name"><i class="fas fa-user"></i> Your Name *</label>
+          <input type="text" id="customer-name" placeholder="Enter your full name" required />
+        </div>
+        <div class="form-group">
+          <label for="customer-phone"><i class="fas fa-phone"></i> Phone Number *</label>
+          <input type="tel" id="customer-phone" placeholder="Enter your WhatsApp number" required />
+        </div>
+        <div class="form-group">
+          <label for="event-date"><i class="fas fa-calendar"></i> Event Date</label>
+          <input type="date" id="event-date" />
+        </div>
+        <div class="form-group">
+          <label for="guest-count"><i class="fas fa-users"></i> Number of Guests</label>
+          <input type="number" id="guest-count" placeholder="Approx. number of guests" min="1" />
+        </div>
+        <div class="form-group">
+          <label for="event-type"><i class="fas fa-star"></i> Event Type</label>
+          <select id="event-type">
+            <option value="">Select event type</option>
+            <option>Wedding</option>
+            <option>Birthday Party</option>
+            <option>House Warming</option>
+            <option>Pooja / Festival</option>
+            <option>Corporate Event</option>
+            <option>Get Together</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="notes"><i class="fas fa-comment"></i> Additional Notes</label>
+          <textarea id="notes" rows="3" placeholder="Any special requirements or preferences..."></textarea>
+        </div>
+        <div class="selected-summary" id="selected-summary"></div>
+        <button type="submit" class="btn btn-whatsapp btn-full">
+          <i class="fab fa-whatsapp"></i> Send Quote Request to WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/menu-data.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
