@@ -8,21 +8,13 @@ const ADMIN_CONFIG = {
 };
 
 const CATEGORY_LABELS = {
-  breakfast: "Breakfast & Tiffin",
-  rice:      "Rice Items",
-  curries:   "Curries & Sides",
-  sweets:    "Sweets",
-  snacks:    "Snacks",
-  beverages: "Beverages"
+  veg:    "Veg Tray",
+  nonveg: "Non-Veg Tray"
 };
 
 const CATEGORY_COLORS = {
-  breakfast: { bg: "#FF9E2C", gradient: "linear-gradient(135deg, #FF9E2C, #F4B942)" },
-  rice:      { bg: "#F4A261", gradient: "linear-gradient(135deg, #F4A261, #E8732A)" },
-  curries:   { bg: "#26A69A", gradient: "linear-gradient(135deg, #26A69A, #00695C)" },
-  sweets:    { bg: "#EC407A", gradient: "linear-gradient(135deg, #EC407A, #AD1457)" },
-  snacks:    { bg: "#D4A017", gradient: "linear-gradient(135deg, #D4A017, #A0793B)" },
-  beverages: { bg: "#5C6BC0", gradient: "linear-gradient(135deg, #5C6BC0, #283593)" }
+  veg:    { bg: "#4CAF50", gradient: "linear-gradient(135deg, #66BB6A, #2E7D32)" },
+  nonveg: { bg: "#E8532A", gradient: "linear-gradient(135deg, #FF7043, #BF360C)" }
 };
 
 /* ── STATE ── */
@@ -130,11 +122,11 @@ function renderStats() {
     </div>
     <div class="stat-card">
       <div class="stat-icon" style="background: linear-gradient(135deg, #EC407A, #AD1457)">
-        <i class="fas fa-rupee-sign"></i>
+        <i class="fas fa-dollar-sign"></i>
       </div>
       <div class="stat-info">
-        <strong>$${Math.max(...menuItems.map(i => i.price)).toLocaleString("en-US")}</strong>
-        <span>Highest Price</span>
+        <strong>$${Math.max(...menuItems.map(i => i.priceFull || 0)).toLocaleString("en-US")}</strong>
+        <span>Highest Full Tray</span>
       </div>
     </div>`;
 }
@@ -145,9 +137,7 @@ function renderStats() {
 function renderTable() {
   let filtered = menuItems.filter(item => {
     const matchCat = filterCategory === "all" || item.category === filterCategory;
-    const matchSearch = !searchQuery ||
-      item.name.toLowerCase().includes(searchQuery) ||
-      item.description.toLowerCase().includes(searchQuery);
+    const matchSearch = !searchQuery || item.name.toLowerCase().includes(searchQuery);
     return matchCat && matchSearch;
   });
 
@@ -172,15 +162,15 @@ function renderTable() {
             </div>
             <div class="item-name-cell">
               <strong>${esc(item.name)}</strong>
-              <small>${esc(item.description.slice(0, 55))}${item.description.length > 55 ? '…' : ''}</small>
             </div>
           </div>
         </td>
         <td>
           <span class="category-badge cat-${item.category}">${catLabel}</span>
         </td>
-        <td class="price-cell">$${item.price.toLocaleString("en-US")}</td>
-        <td class="unit-cell">${esc(item.unit)}</td>
+        <td class="price-cell">$${(item.priceHalf || 0).toLocaleString("en-US")}</td>
+        <td class="price-cell">$${(item.priceMed || 0).toLocaleString("en-US")}</td>
+        <td class="price-cell">$${(item.priceFull || 0).toLocaleString("en-US")}</td>
         <td>
           <div class="action-cell">
             <button class="action-btn edit-btn" onclick="openEditModal(${item.id})" title="Edit">
@@ -257,9 +247,9 @@ function openEditModal(id) {
   document.getElementById("item-id").value = id;
   document.getElementById("item-name").value = item.name;
   document.getElementById("item-category").value = item.category;
-  document.getElementById("item-desc").value = item.description;
-  document.getElementById("item-price").value = item.price;
-  document.getElementById("item-unit").value = item.unit;
+  document.getElementById("item-price-half").value = item.priceHalf || "";
+  document.getElementById("item-price-med").value = item.priceMed || "";
+  document.getElementById("item-price-full").value = item.priceFull || "";
   document.getElementById("item-emoji").value = item.emoji || "";
   document.getElementById("item-color").value = item.color || "#FF6B35";
   document.getElementById("item-image").value = item.imageUrl || "";
@@ -281,30 +271,29 @@ function handleItemSave(e) {
   e.preventDefault();
   const name = document.getElementById("item-name").value.trim();
   const category = document.getElementById("item-category").value;
-  const desc = document.getElementById("item-desc").value.trim();
-  const price = parseFloat(document.getElementById("item-price").value);
-  const unit = document.getElementById("item-unit").value.trim() || "per serving";
+  const priceHalf = parseFloat(document.getElementById("item-price-half").value);
+  const priceMed = parseFloat(document.getElementById("item-price-med").value);
+  const priceFull = parseFloat(document.getElementById("item-price-full").value);
   const emoji = document.getElementById("item-emoji").value.trim() || "🍛";
   const color = document.getElementById("item-color").value;
   const imageUrl = document.getElementById("item-image").value.trim();
 
-  if (!name || !category || isNaN(price) || price <= 0) {
+  if (!name || !category || isNaN(priceHalf) || isNaN(priceMed) || isNaN(priceFull)) {
     showToast("Please fill in all required fields.", "error");
     return;
   }
 
-  const catCol = CATEGORY_COLORS[category] || CATEGORY_COLORS.breakfast;
   const bgGradient = `linear-gradient(135deg, ${color} 0%, ${darkenHex(color, 30)} 100%)`;
 
   if (editingId !== null) {
     const idx = menuItems.findIndex(m => m.id === editingId);
     if (idx !== -1) {
-      menuItems[idx] = { ...menuItems[idx], name, category, description: desc, price, unit, emoji, color, bgGradient, imageUrl: imageUrl || undefined };
+      menuItems[idx] = { ...menuItems[idx], name, category, priceHalf, priceMed, priceFull, emoji, color, bgGradient, imageUrl: imageUrl || undefined };
     }
     showToast(`"${name}" updated successfully.`, "success");
   } else {
     const newId = Date.now();
-    menuItems.push({ id: newId, category, name, description: desc, price, unit, emoji, color, bgGradient, imageUrl: imageUrl || undefined });
+    menuItems.push({ id: newId, category, name, priceHalf, priceMed, priceFull, emoji, color, bgGradient, imageUrl: imageUrl || undefined });
     showToast(`"${name}" added to menu.`, "success");
   }
 

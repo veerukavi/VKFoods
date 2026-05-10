@@ -87,14 +87,16 @@ function renderMenu() {
   grid.innerHTML = filtered.map(item => buildMenuCard(item)).join("");
 
   // Attach "add to quote" listeners
-  grid.querySelectorAll(".add-to-quote-btn").forEach(btn => {
+  grid.querySelectorAll(".size-add-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const id = parseInt(btn.dataset.id, 10);
-      addToCart(id);
-      btn.textContent = "✓ Added";
+      const size = btn.dataset.size;
+      const price = parseInt(btn.dataset.price, 10);
+      addToCart(id, size, price);
+      btn.textContent = "✓";
       btn.classList.add("added");
       setTimeout(() => {
-        btn.textContent = "+ Add to Quote";
+        btn.textContent = "+";
         btn.classList.remove("added");
       }, 1500);
     });
@@ -102,10 +104,29 @@ function renderMenu() {
 }
 
 function buildMenuCard(item) {
-  const inCart = cart.some(c => c.id === item.id);
   const imageContent = item.imageUrl
     ? `<img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.name)}" loading="lazy" onerror="this.style.display='none'"/><span class="emoji-fallback">${item.emoji}</span>`
     : `<span class="emoji-fallback">${item.emoji}</span>`;
+
+  const sizes = [
+    { key: "half",   label: "Half",   price: item.priceHalf },
+    { key: "medium", label: "Medium", price: item.priceMed },
+    { key: "full",   label: "Full",   price: item.priceFull }
+  ];
+
+  const tiers = sizes.map(s => {
+    const cartId = `${item.id}_${s.key}`;
+    const inCart = cart.some(c => c.cartId === cartId);
+    return `
+      <div class="price-tier">
+        <span class="tier-label">${s.label}</span>
+        <span class="tier-price">${CONFIG.currency}${s.price}</span>
+        <button class="size-add-btn ${inCart ? 'added' : ''}"
+                data-id="${item.id}" data-size="${s.key}" data-price="${s.price}">
+          ${inCart ? '✓' : '+'}
+        </button>
+      </div>`;
+  }).join("");
 
   return `
     <div class="menu-card fade-in">
@@ -115,16 +136,7 @@ function buildMenuCard(item) {
       <div class="card-body">
         <span class="card-category" style="color:${item.color || '#FF6B35'}">${CATEGORY_LABELS[item.category] || item.category}</span>
         <h3 class="card-name">${escapeHtml(item.name)}</h3>
-        <p class="card-desc">${escapeHtml(item.description)}</p>
-        <div class="card-footer">
-          <div>
-            <span class="card-price">${CONFIG.currency}${item.price}</span>
-            <span class="card-unit"> ${escapeHtml(item.unit)}</span>
-          </div>
-          <button class="add-to-quote-btn ${inCart ? 'added' : ''}" data-id="${item.id}">
-            ${inCart ? '✓ Added' : '+ Add to Quote'}
-          </button>
-        </div>
+        <div class="price-tiers">${tiers}</div>
       </div>
     </div>`;
 }
@@ -163,26 +175,28 @@ function closeCart() {
   document.body.style.overflow = "";
 }
 
-function addToCart(id) {
+function addToCart(id, size, price) {
   const item = menuItems.find(m => m.id === id);
   if (!item) return;
-  const existing = cart.find(c => c.id === id);
+  const cartId = `${id}_${size}`;
+  const sizeLabel = size.charAt(0).toUpperCase() + size.slice(1);
+  const existing = cart.find(c => c.cartId === cartId);
   if (existing) {
     existing.qty += 1;
   } else {
-    cart.push({ ...item, qty: 1 });
+    cart.push({ ...item, cartId, size, sizeLabel, price, qty: 1 });
   }
   updateCartUI();
-  showToast(`${item.name} added to quote!`);
+  showToast(`${item.name} (${sizeLabel}) added to quote!`);
 }
 
-function removeFromCart(id) {
-  cart = cart.filter(c => c.id !== id);
+function removeFromCart(cartId) {
+  cart = cart.filter(c => c.cartId !== cartId);
   updateCartUI();
 }
 
-function updateQty(id, delta) {
-  const item = cart.find(c => c.id === id);
+function updateQty(cartId, delta) {
+  const item = cart.find(c => c.cartId === cartId);
   if (!item) return;
   item.qty = Math.max(1, item.qty + delta);
   updateCartUI();
@@ -212,13 +226,13 @@ function updateCartUI() {
       <div class="cart-item-emoji" style="background:${item.bgGradient || '#FF9E2C'}">${item.emoji}</div>
       <div class="cart-item-info">
         <div class="cart-item-name">${escapeHtml(item.name)}</div>
-        <div class="cart-item-price">${CONFIG.currency}${item.price} ${escapeHtml(item.unit)}</div>
+        <div class="cart-item-price">${item.sizeLabel} Tray — ${CONFIG.currency}${item.price}</div>
       </div>
       <div class="cart-item-controls">
-        <button class="qty-btn" onclick="updateQty(${item.id}, -1)">−</button>
+        <button class="qty-btn" onclick="updateQty('${item.cartId}', -1)">−</button>
         <span class="qty-display">${item.qty}</span>
-        <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
-        <button class="qty-btn" onclick="removeFromCart(${item.id})" title="Remove">🗑</button>
+        <button class="qty-btn" onclick="updateQty('${item.cartId}', 1)">+</button>
+        <button class="qty-btn" onclick="removeFromCart('${item.cartId}')" title="Remove">🗑</button>
       </div>
     </div>`).join("");
 
@@ -262,7 +276,7 @@ function renderSelectedSummary() {
     <h4>Selected Items</h4>
     ${cart.map(c => `
       <div class="summary-item">
-        <span>${c.emoji} ${c.name} × ${c.qty}</span>
+        <span>${c.emoji} ${c.name} (${c.sizeLabel}) × ${c.qty}</span>
         <span>${CONFIG.currency}${(c.price * c.qty).toLocaleString("en-US")}</span>
       </div>`).join("")}
     <div class="summary-item" style="font-weight:600;border-top:1px solid #ddd;margin-top:6px;padding-top:6px">
@@ -304,7 +318,7 @@ function buildWhatsAppMessage({ name, phone, eventDate, guestCount, eventType, n
   lines.push("━━━━━━━━━━━━━━━━━━━━");
   lines.push("📋 *Requested Items:*");
   cart.forEach(c => {
-    lines.push(`  • ${c.emoji} ${c.name} × ${c.qty} — ${CONFIG.currency}${(c.price * c.qty).toLocaleString("en-US")} (${c.unit})`);
+    lines.push(`  • ${c.emoji} ${c.name} (${c.sizeLabel} Tray) × ${c.qty} — ${CONFIG.currency}${(c.price * c.qty).toLocaleString("en-US")}`);
   });
   const total = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
   lines.push("━━━━━━━━━━━━━━━━━━━━");
