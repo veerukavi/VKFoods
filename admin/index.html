@@ -74,12 +74,8 @@
         <div class="filter-wrap">
           <select id="filter-category">
             <option value="all">All Categories</option>
-            <option value="breakfast">Breakfast & Tiffin</option>
-            <option value="rice">Rice Items</option>
-            <option value="curries">Curries & Sides</option>
-            <option value="sweets">Sweets</option>
-            <option value="snacks">Snacks</option>
-            <option value="beverages">Beverages</option>
+            <option value="veg">Veg Tray</option>
+            <option value="nonveg">Non-Veg Tray</option>
           </select>
         </div>
         <button class="btn btn-primary" id="add-item-btn">
@@ -97,8 +93,9 @@
             <tr>
               <th>Item</th>
               <th>Category</th>
-              <th>Price</th>
-              <th>Unit</th>
+              <th>Half</th>
+              <th>Medium</th>
+              <th>Full</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -124,33 +121,29 @@
         <div class="form-row">
           <div class="form-group">
             <label>Item Name *</label>
-            <input type="text" id="item-name" placeholder="e.g. Masala Dosa" required />
+            <input type="text" id="item-name" placeholder="e.g. Chicken Curry" required />
           </div>
           <div class="form-group">
             <label>Category *</label>
             <select id="item-category" required>
               <option value="">Select category</option>
-              <option value="breakfast">Breakfast & Tiffin</option>
-              <option value="rice">Rice Items</option>
-              <option value="curries">Curries & Sides</option>
-              <option value="sweets">Sweets</option>
-              <option value="snacks">Snacks</option>
-              <option value="beverages">Beverages</option>
+              <option value="veg">Veg Tray</option>
+              <option value="nonveg">Non-Veg Tray</option>
             </select>
           </div>
         </div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea id="item-desc" rows="2" placeholder="Brief description of the item..."></textarea>
-        </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Price ($) *</label>
-            <input type="number" id="item-price" placeholder="e.g. 55" min="1" required />
+            <label>Half Tray ($) *</label>
+            <input type="number" id="item-price-half" placeholder="e.g. 60" min="1" required />
           </div>
           <div class="form-group">
-            <label>Unit</label>
-            <input type="text" id="item-unit" placeholder="e.g. per plate, per kg" />
+            <label>Medium Tray ($) *</label>
+            <input type="number" id="item-price-med" placeholder="e.g. 90" min="1" required />
+          </div>
+          <div class="form-group">
+            <label>Full Tray ($) *</label>
+            <input type="number" id="item-price-full" placeholder="e.g. 120" min="1" required />
           </div>
         </div>
         <div class="form-row">
