@@ -337,25 +337,27 @@ input, select, textarea { font-family: inherit; }
   overflow: hidden;
   border-radius: var(--radius);
   cursor: pointer;
-  /* Gradient placeholder — always visible behind the image */
-  background: var(--ph-grad, linear-gradient(145deg, #8B1A1A, #E8532A));
+  /* gradient is set inline per item */
 }
-/* Big food emoji shown as placeholder when image absent */
-.gallery-item::before {
-  content: var(--ph-emoji, '🍛');
+.gallery-large { grid-row: span 2; }
+.gallery-highlight { grid-column: span 1; }
+
+/* Emoji placeholder — visible until photo loads */
+.gallery-emoji {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 5rem;
-  opacity: 0.35;
-  pointer-events: none;
+  opacity: 0.4;
   z-index: 0;
+  pointer-events: none;
+  /* prevent text selection */
+  user-select: none;
 }
-.gallery-large { grid-row: span 2; }
-.gallery-highlight { grid-column: span 1; }
 
+/* Real photo sits on top of the gradient+emoji */
 .gallery-item img {
   position: absolute;
   inset: 0;
@@ -368,39 +370,36 @@ input, select, textarea { font-family: inherit; }
 }
 .gallery-item:hover img { transform: scale(1.06); }
 
+/* Label overlay — always at bottom */
 .gallery-overlay {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(44,24,16,0.78) 0%, rgba(44,24,16,0.15) 50%, transparent 100%);
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(20,8,4,0.82) 0%, transparent 100%);
   display: flex;
   align-items: flex-end;
-  padding: 18px;
-  z-index: 2;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  padding: 20px 16px 14px;
+  z-index: 3;
 }
-.gallery-item:hover .gallery-overlay,
-.gallery-overlay.always-show { opacity: 1; }
 .gallery-overlay span {
   color: var(--white);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   letter-spacing: 0.04em;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.6);
 }
 
 @media (max-width: 768px) {
   .gallery-mosaic {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
+    grid-template-rows: 180px 180px 180px;
   }
   .gallery-large { grid-row: span 1; }
-  .gallery-item { height: 200px; }
 }
 @media (max-width: 480px) {
-  .gallery-mosaic { grid-template-columns: 1fr; }
-  .gallery-item { height: 220px; }
-  .gallery-large { height: 260px; }
+  .gallery-mosaic {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, 200px);
+  }
 }
 
 /* ══════════════════════════════════════
