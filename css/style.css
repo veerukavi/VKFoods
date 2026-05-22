@@ -331,73 +331,62 @@ input, select, textarea { font-family: inherit; }
   grid-template-columns: 1.6fr 1fr 1fr;
   grid-template-rows: 260px 260px;
   gap: 14px;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
 }
 .gallery-item {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius);
-  background: var(--cream-dark);
   cursor: pointer;
+  /* Gradient placeholder — always visible behind the image */
+  background: var(--ph-grad, linear-gradient(145deg, #8B1A1A, #E8532A));
 }
-.gallery-large {
-  grid-row: span 2;
-}
-.gallery-highlight {
-  grid-column: span 1;
-}
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-  display: block;
-}
-.gallery-item:hover img {
-  transform: scale(1.06);
-}
-.gallery-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(44,24,16,0.75) 0%, transparent 55%);
-  display: flex;
-  align-items: flex-end;
-  padding: 16px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.gallery-item:hover .gallery-overlay {
-  opacity: 1;
-}
-.gallery-overlay span {
-  color: var(--white);
-  font-size: 0.88rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-/* Placeholder when image not yet uploaded */
-.gallery-item img[src="images/spread1.jpg"]:not([complete]),
-.gallery-item img:not([src]),
-.gallery-item img[src=""],
-.gallery-item img.broken {
-  display: none;
-}
+/* Big food emoji shown as placeholder when image absent */
 .gallery-item::before {
-  content: attr(data-label);
+  content: var(--ph-emoji, '🍛');
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--cream-dark);
-  color: var(--text-light);
-  font-size: 0.8rem;
-  font-style: italic;
+  font-size: 5rem;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
 }
-/* Hide placeholder once image loads */
-.gallery-item img[src]:not([src=""]) + .gallery-overlay {
+.gallery-large { grid-row: span 2; }
+.gallery-highlight { grid-column: span 1; }
+
+.gallery-item img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block;
+  z-index: 1;
+}
+.gallery-item:hover img { transform: scale(1.06); }
+
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(44,24,16,0.78) 0%, rgba(44,24,16,0.15) 50%, transparent 100%);
   display: flex;
+  align-items: flex-end;
+  padding: 18px;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.gallery-item:hover .gallery-overlay,
+.gallery-overlay.always-show { opacity: 1; }
+.gallery-overlay span {
+  color: var(--white);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
 }
 
 @media (max-width: 768px) {
