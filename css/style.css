@@ -320,6 +320,101 @@ input, select, textarea { font-family: inherit; }
 }
 
 /* ══════════════════════════════════════
+   GALLERY
+══════════════════════════════════════ */
+.gallery-section {
+  padding: 90px 0;
+  background: var(--white);
+}
+.gallery-mosaic {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  grid-template-rows: 260px 260px;
+  gap: 14px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--cream-dark);
+  cursor: pointer;
+}
+.gallery-large {
+  grid-row: span 2;
+}
+.gallery-highlight {
+  grid-column: span 1;
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block;
+}
+.gallery-item:hover img {
+  transform: scale(1.06);
+}
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(44,24,16,0.75) 0%, transparent 55%);
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+.gallery-overlay span {
+  color: var(--white);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+/* Placeholder when image not yet uploaded */
+.gallery-item img[src="images/spread1.jpg"]:not([complete]),
+.gallery-item img:not([src]),
+.gallery-item img[src=""],
+.gallery-item img.broken {
+  display: none;
+}
+.gallery-item::before {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream-dark);
+  color: var(--text-light);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+/* Hide placeholder once image loads */
+.gallery-item img[src]:not([src=""]) + .gallery-overlay {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .gallery-mosaic {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+  .gallery-large { grid-row: span 1; }
+  .gallery-item { height: 200px; }
+}
+@media (max-width: 480px) {
+  .gallery-mosaic { grid-template-columns: 1fr; }
+  .gallery-item { height: 220px; }
+  .gallery-large { height: 260px; }
+}
+
+/* ══════════════════════════════════════
    FEATURES
 ══════════════════════════════════════ */
 .features {
